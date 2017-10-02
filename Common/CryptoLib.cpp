@@ -23,6 +23,8 @@ ByteStream encodeBase64( ByteStream data );
 ByteStream decodeBase64( ByteStream data );
 char hexCharToByte( char hexChar );
 ByteStream fixedXOR( ByteStream one, ByteStream two );
+void fixedXOR( ByteStream &output, ByteStream inputOne, ByteStream inputTwo );
+void printBytesAsString( ByteStream input );
 
 
 //==============================================================================
@@ -178,4 +180,31 @@ ByteStream fixedXOR( ByteStream one, ByteStream two )
     }
 
     return result;
+}
+
+//==============================================================================
+void fixedXOR( ByteStream &output, ByteStream inputOne, ByteStream inputTwo )
+//==============================================================================
+{
+    //free any existing memory
+    if (output.bytes)
+    {
+        delete [] output.bytes;
+    }
+
+    //assign to output
+    output = fixedXOR( inputOne, inputTwo );
+}
+
+
+//==============================================================================
+void printBytesAsString( ByteStream input )
+//==============================================================================
+{
+    for (int i = 0; i < input.size; ++i)
+    {
+        std::cout << input.bytes[i];
+    }
+    
+    std::cout << std::endl;
 }
