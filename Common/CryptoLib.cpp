@@ -22,6 +22,7 @@ ByteStream base64ToBytes( char *base64String );
 ByteStream encodeBase64( ByteStream data );
 ByteStream decodeBase64( ByteStream data );
 char hexCharToByte( char hexChar );
+ByteStream fixedXOR( ByteStream one, ByteStream two );
 
 
 //==============================================================================
@@ -157,4 +158,24 @@ char hexCharToByte( char hexChar )
     }
 
     return byte;
+}
+
+
+//==============================================================================
+ByteStream fixedXOR( ByteStream one, ByteStream two )
+//==============================================================================
+{
+    ByteStream result = {0, 0};
+
+    if (one.size == two.size)
+    {
+        result.size = one.size;
+        result.bytes = new unsigned char[result.size];
+        for (int i = 0; i < result.size; ++i)
+        {
+            result.bytes[i] = one.bytes[i] ^ two.bytes[i];
+        }
+    }
+
+    return result;
 }

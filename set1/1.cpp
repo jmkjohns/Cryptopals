@@ -1,4 +1,4 @@
-#include "..\Common\Base64Lib.cpp"
+#include "..\Common\CryptoLib.cpp"
 
 //==============================================================================
 int main( int argc, char *argv[] )
