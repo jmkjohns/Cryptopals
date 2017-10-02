@@ -24,6 +24,7 @@ ByteStream decodeBase64( ByteStream data );
 char hexCharToByte( char hexChar );
 ByteStream fixedXOR( ByteStream one, ByteStream two );
 void fixedXOR( ByteStream &output, ByteStream inputOne, ByteStream inputTwo );
+int fixedXORInPlace( ByteStream &decoder, ByteStream input );
 void printBytesAsString( ByteStream input );
 
 
@@ -207,4 +208,26 @@ void printBytesAsString( ByteStream input )
     }
     
     std::cout << std::endl;
+}
+
+
+//==============================================================================
+int fixedXORInPlace( ByteStream &decoder, ByteStream input )
+//==============================================================================
+{
+    int retCode = 0;
+
+    if (decoder.size == input.size)
+    {
+        for (int i = 0; i < input.size; ++i)
+        {
+            decoder.bytes[i] ^= input.bytes[i];
+        }
+    }
+    else
+    {
+        retCode = 1;
+    }
+
+    return retCode;
 }
