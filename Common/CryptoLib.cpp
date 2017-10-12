@@ -18,6 +18,7 @@ struct ByteStream
 void printHex( ByteStream data );
 void printBase64( ByteStream data );
 ByteStream hexToBytes( char *hexString );
+void hexToBytes( ByteStream &data );
 ByteStream base64ToBytes( char *base64String );
 ByteStream encodeBase64( ByteStream data );
 ByteStream decodeBase64( ByteStream data );
@@ -84,6 +85,32 @@ ByteStream hexToBytes( char *hexString )
 
     //return
     return data;
+}
+
+
+//==============================================================================
+//takes a bytestream which has a hex string extracted from a file and 
+//translates it into raw bytes in place
+//assumes that the string is a multiple of 2 in length
+
+void hexToBytes( ByteStream &data )
+//==============================================================================
+{
+    //declare
+    int newSize = data.size / 2;
+
+    for (int i = 0; i < data.size; i += 2)
+    {
+        data.bytes[i / 2] = hexCharToByte( data.bytes[i] ) << 4;
+        if ((i + 1) < data.size)
+        {
+            data.bytes[i / 2] = data.bytes[i / 2] | hexCharToByte( data.bytes[i + 1] );
+        }
+    }
+
+    //TODO - clear remaining memory?
+    
+    data.size = newSize;
 }
 
 
