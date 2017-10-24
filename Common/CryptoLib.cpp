@@ -27,6 +27,8 @@ ByteStream fixedXOR( ByteStream one, ByteStream two );
 void fixedXOR( ByteStream &output, ByteStream inputOne, ByteStream inputTwo );
 int fixedXORInPlace( ByteStream &decoder, ByteStream input );
 void printBytesAsString( ByteStream input );
+ByteStream stringToBytes( char *string );
+void repKeyXOR( ByteStream &input, ByteStream key );
 
 
 //==============================================================================
@@ -257,4 +259,27 @@ int fixedXORInPlace( ByteStream &decoder, ByteStream input )
     }
 
     return retCode;
+}
+
+
+//==============================================================================
+ByteStream stringToBytes( char *string )
+//==============================================================================
+{
+    ByteStream output;
+    output.size = strlen( string );
+    output.bytes = new unsigned char[output.size];
+    memcpy( output.bytes, string, output.size );
+    return output;
+}
+
+
+//==============================================================================
+void repKeyXOR( ByteStream &input, ByteStream key )
+//==============================================================================
+{
+    for (int i = 0; i < input.size; ++i)
+    {
+        input.bytes[i] = input.bytes[i] ^ key.bytes[i % key.size];
+    }
 }
