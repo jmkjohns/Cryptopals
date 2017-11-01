@@ -29,6 +29,7 @@ int fixedXORInPlace( ByteStream &decoder, ByteStream input );
 void printBytesAsString( ByteStream input );
 ByteStream stringToBytes( char *string );
 void repKeyXOR( ByteStream &input, ByteStream key );
+int hammingDistance( ByteStream one, ByteStream two );
 
 
 //==============================================================================
@@ -282,4 +283,37 @@ void repKeyXOR( ByteStream &input, ByteStream key )
     {
         input.bytes[i] = input.bytes[i] ^ key.bytes[i % key.size];
     }
+}
+
+
+//==============================================================================
+int hammingDistance( ByteStream one, ByteStream two )
+//==============================================================================
+{
+    int total = -1;
+    ByteStream output = {0, 0};
+    unsigned char current = 0;
+
+    if (one.size == two.size)
+    {
+        total = 0;
+        output.size = one.size;
+        output.bytes = new unsigned char[output.size];
+        memcpy( output.bytes, one.bytes, one.size );
+
+        for (int i = 0; i < output.size; ++i)
+        {
+            *(output.bytes + i) ^= *(two.bytes + i);
+            current = *(output.bytes + i);
+            while (current != 0)
+            {
+                total++;
+                current &= current - 1;
+            }
+        }
+
+        delete [] output.bytes;
+    }
+
+    return total;
 }
